@@ -80,6 +80,7 @@ class Signin extends Component {
                 <div className="alert alert-danger" style={{ display: error ? "" : "none" }}>
                     {error}
                 </div>
+                
                 {loading ? (
                     <div className="jumbotron text-center">
                         <h2>Loading....</h2>
