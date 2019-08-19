@@ -1,50 +1,50 @@
-import React,{Component} from 'react';
-import {Redirect} from 'react-router-dom';
-import { isAuthenticated } from '../auth';
-import {remove} from './apiUser';
-import {signout} from '../auth';
+import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import { isAuthenticated } from "../auth";
+import { remove } from "./apiUser";
+import { signout } from "../auth";
 
-
-class DeleteUser extends Component{
-
-    state={
-        redirect:false
+class DeleteUser extends Component {
+    state = {
+        redirect: false
     };
 
-    deleteAccount=()=>{
+    deleteAccount = () => {
         const token = isAuthenticated().token;
-        const userId=this.props.userId;
-        remove(userId,token)
-        .then(data=>{
-            if(data.error){
-                console.log(data.error)
+        const userId = this.props.userId;
+        remove(userId, token).then(data => {
+            if (data.error) {
+                console.log(data.error);
+            } else {
+                // signout user
+                signout(() => console.log("User is deleted"));
+                // redirect
+                this.setState({ redirect: true });
             }
-            else{
-                //signout 
-                signout(()=>console.log("user is deleted"))
-                //redirect
-                this.setState({redirect:true})
-            }
-        })
-    }
+        });
+    };
 
-    deleteConfirmed=()=>{
-        let answer=window.confirm("Are u sure to delete account?")
-        if(answer){
-            this.deleteAccount()
+    deleteConfirmed = () => {
+        let answer = window.confirm(
+            "Are you sure you want to delete your account?"
+        );
+        if (answer) {
+            this.deleteAccount();
         }
-    }
+    };
 
-
-    render(){
-        if(this.state.redirect){
-            return <Redirect to='/' />
+    render() {
+        if (this.state.redirect) {
+            return <Redirect to="/" />;
         }
-        return(
-            <button onClick={this.deleteConfirmed} className="btn btn-raised btn-danger">
+        return (
+            <button
+                onClick={this.deleteConfirmed}
+                className="btn btn-raised btn-danger"
+            >
                 Delete Profile
             </button>
-        )
+        );
     }
 }
 
